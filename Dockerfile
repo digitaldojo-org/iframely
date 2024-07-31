@@ -20,6 +20,8 @@ COPY . /iframely
 
 RUN chown -R iframely /iframely/config.local.js
 
+RUN chmod +x /iframely/docker/entrypoint.sh
+
 USER iframely
 
 ENTRYPOINT [ "/iframely/docker/entrypoint.sh" ]
