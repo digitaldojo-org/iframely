@@ -18,10 +18,7 @@ RUN yarn install --pure-lockfile --production
 
 COPY . /iframely
 
-# Check if the file exists before changing ownership
-RUN [ -f /iframely/config.local.js ] && chown -R iframely /iframely/config.local.js || echo "File /iframely/config.local.js does not exist"
-
-RUN chmod +x /iframely/docker/entrypoint.sh
+RUN chown -R iframely /iframely/config.local.js
 
 USER iframely
 
