@@ -61,7 +61,7 @@ export default {
             player.rel = player.rel.concat(iframe.allow.replace(/autoplay;?\s?\*?/ig, '').split(/\s?\*?(?:;|,)\s?\*?/g));
         }
 
-        if (player.href && whitelistRecord.isAllowed('oembed.rich', "accept") && player.type === CONFIG.T.text_html) {
+        if (player.href && whitelistRecord.isAllowed('oembed.video', "accept") && player.type === CONFIG.T.text_html) {
             player.accept = player.type;
             delete player.type;
         }
@@ -71,8 +71,7 @@ export default {
     },
 
     getMeta: function(oembed, whitelistRecord) {
-
-        if (!whitelistRecord.isAllowed('oembed.video') && (oembed.type === "video" || oembed.type === "audio")) {
+        if (whitelistRecord.isAllowed('oembed.video') && (oembed.type === "video" || oembed.type === "audio")) {
             return {
                 medium: oembed.type
             };

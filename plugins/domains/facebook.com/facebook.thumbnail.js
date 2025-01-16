@@ -12,8 +12,6 @@ export default {
         'facebook.video'
     ],
 
-    mixins: ['facebook.meta-fallback'],
-
     getLink: function(url, __allowFBThumbnail, options, meta) {
 
         var thumbnail = meta.twitter?.image
@@ -54,12 +52,17 @@ export default {
     },
 
 
-    getData: function(oembed, options) {
+    getData: function(oembed, url, options) {
         
         if (oembed.html && /class=\"fb\-(post|video)\"/i.test(oembed.html) 
             && options.getProviderOptions('facebook.thumbnail', true) && !/comment_id=/.test(oembed.html)) {
 
-            options.followHTTPRedirect = true; // avoid security re-directs of URLs if any
+            // Avoid security re-directs of URLs if any,
+            // but fix canonical URLs for /share urls that now redirect to story.php
+            if (!/facebook\.com\/(permalink|story)\.php\?/i.test(url)) {
+                options.followHTTPRedirect = true; 
+            }
+
             options.exposeStatusCode = true;
             options.provider = 'Facebook';
 
@@ -72,6 +75,5 @@ export default {
     tests: [{
         noFeeds: true,
         skipMethods: ['getData', 'getLink'],
-        skipMixins: ['facebook.meta-fallback']
     }]
 };

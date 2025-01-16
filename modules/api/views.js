@@ -106,6 +106,11 @@ function processInitialErrors(uri, next) {
         next(new utils.HttpError(400, "local domains not supported"));
         return true;
     }
+
+    if (/^(https?:\/\/)?(\.|\/|~)/i.test(uri)) {
+        next(new utils.HttpError(400, "file paths are not accepted"));
+        return true;
+    }
 }
 
 export default function(app) {
@@ -133,7 +138,7 @@ export default function(app) {
                     debug: getBooleanParam(req, 'debug'),
                     returnProviderOptionsUsage: getBooleanParam(req, 'debug'),
                     mixAllWithDomainPlugin: getBooleanParam(req, 'mixAllWithDomainPlugin'),
-                    forceParams: req.query.meta === "true" ? ["meta", "oembed"] : null,
+                    forceParams: req.query.meta === "true" ? CONFIG.DEBUG_CONTEXTS : null,
                     whitelist: getBooleanParam(req, 'whitelist'),
                     readability: getBooleanParam(req, 'readability'),
                     getWhitelistRecord: whitelist.findWhitelistRecordFor,

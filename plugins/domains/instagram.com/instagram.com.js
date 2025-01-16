@@ -86,7 +86,7 @@ export default {
                 // No media - let's validate image as it may be expired.
 
                 // Remove below error when and if it's fixed. Validators will remove the link
-                error: 'Unfortunatelly Instagram\'s OG image is cropped as of 2023-10-11 and as of 2024-02-02'
+                error: oembed.is_fallback ? null : 'Unfortunatelly Instagram\'s OG image is cropped as of 2023-10-11 and as of 2024-02-02'
             });
         }        
 
@@ -167,10 +167,6 @@ export default {
             result.ipOG = {};
         } else {
             result.__allowInstagramMeta = true;
-        }
-
-        if (urlMatch[1] && urlMatch[1].length > 30) {
-            result.message = 'This Instagram post is private.'; // IDs longer than 30 is for private posts as of March 11, 2020
         }
 
         if (!options.redirectsHistory && (/^https?:\/\/instagram\.com\//i.test(url) || /^http:\/\/www\.instagram\.com\//i.test(url))) {
